@@ -27,13 +27,7 @@ function App() {
   const [modalImage, setModalImage] = useState(null);
 
   const onSearch = (value) => {
-    const trimValue = value.trim();
-    if (trimValue == "") {
-      toast.error("Please enter search query");
-      return;
-    }
-
-    if (trimValue !== searchQuery) {
+    if (value !== searchQuery) {
       setSearchQuery(value);
       setPage(1);
       setImages([]);
@@ -54,36 +48,32 @@ function App() {
     setPage(page + 1);
   };
 
-  const getImages = async (callback, page, search = "") => {
-    try {
-      setIsLoading(true);
-      setIsError(false);
+  useEffect(() => {
+    const getImages = async () => {
+      try {
+        setIsLoading(true);
+        setIsError(false);
 
-      if (search) {
-        const { results, total_pages } = await callback(search, page);
-        setTotalPages(total_pages);
-        setImages((prevImages) => [...prevImages, ...results]);
-      } else {
-        const results = await callback();
-        setImages(results);
+        if (searchQuery) {
+          const { results, total_pages } = await fetchImagesByQuery(
+            searchQuery,
+            page
+          );
+          setTotalPages(total_pages);
+          setImages((prevImages) => [...prevImages, ...results]);
+        } else {
+          const results = await fetchImages();
+          setImages(results);
+        }
+      } catch (e) {
+        setIsError(true);
+        toast.error("Oops, an error occured!");
+      } finally {
+        setIsLoading(false);
       }
+    };
 
-      // eslint-disable-next-line no-unused-vars
-    } catch (e) {
-      setIsError(true);
-      toast.error("Oops, an error occured!");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getImages(fetchImages);
-  }, []);
-
-  useEffect(() => {
-    if (!searchQuery) return;
-    getImages(fetchImagesByQuery, page, searchQuery);
+    getImages();
   }, [searchQuery, page]);
 
   return (

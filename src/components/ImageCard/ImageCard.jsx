@@ -1,15 +1,14 @@
 import css from "./ImageCard.module.css";
 
-const name = ({ image }) => {
+const name = ({ image, onImageClick }) => {
   const { alt_description, urls } = image;
   return (
-    <div>
-      <img
-        className={css.img}
-        src={urls.small}
-        alt={alt_description || "image"}
-      />
-    </div>
+    <img
+      className={css.img}
+      src={urls.small}
+      alt={alt_description || "image"}
+      onClick={() => onImageClick(image)}
+    />
   );
 };
 

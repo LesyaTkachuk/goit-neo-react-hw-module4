@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { FaSearch } from "react-icons/fa";
 import Button from "src/components/Button/Button";
 import css from "./SearchBar.module.css";
@@ -5,7 +6,14 @@ import css from "./SearchBar.module.css";
 const SearchBar = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(e.target.elements.search.value);
+    const trimValue = e.target.elements.search.value.trim();
+
+    if (trimValue == "") {
+      toast.error("Please enter search query");
+      return;
+    }
+
+    onSubmit(trimValue);
   };
 
   return (
