@@ -1,0 +1,25 @@
+.header {
+  padding: 20px 10px;
+  background-color: rgb(38, 38, 189);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.input {
+  width: 360px;
+  padding: 8px 12px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background-color: #fceed6;
+}
+
+.input:focus {
+  outline: none;
+}
